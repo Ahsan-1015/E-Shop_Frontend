@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+const User = require("../models/User");
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -18,6 +19,9 @@ const createOrder = async (req, res) => {
       shippingAddress,
       paymentMethod,
     });
+
+    // Clear user's cart after successful order
+    await User.findByIdAndUpdate(req.user.id, { cart: [] });
 
     res.status(201).json(order);
   } catch (error) {

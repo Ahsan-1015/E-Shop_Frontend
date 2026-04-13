@@ -1,8 +1,16 @@
 const API_BASE_URL = "http://localhost:5000/api";
 
-// Get all products
-export const getProducts = async () => {
-  const response = await fetch(`${API_BASE_URL}/products`);
+// Get all products with filters
+export const getProducts = async (filters = {}) => {
+  const params = new URLSearchParams();
+  
+  if (filters.category && filters.category !== 'all') params.append('category', filters.category);
+  if (filters.minPrice) params.append('minPrice', filters.minPrice);
+  if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
+  if (filters.search) params.append('search', filters.search);
+  if (filters.sort) params.append('sort', filters.sort);
+
+  const response = await fetch(`${API_BASE_URL}/products?${params.toString()}`);
 
   if (!response.ok) {
     const error = await response.json();
@@ -51,4 +59,6 @@ export const searchProducts = async (query) => {
 export default {
   getProducts,
   getProductById,
+  getProductsByCategory,
+  searchProducts,
 };

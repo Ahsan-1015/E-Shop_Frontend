@@ -30,9 +30,11 @@ const registerUser = async (req, res) => {
 
     if (user) {
       res.status(201).json({
+        _id: user._id,
         id: user._id,
         name: user.name,
         email: user.email,
+        photoURL: user.photoURL || "",
         token: generateToken(user._id),
       });
     }
@@ -61,9 +63,11 @@ const loginUser = async (req, res) => {
     }
 
     res.json({
+      _id: user._id,
       id: user._id,
       name: user.name,
       email: user.email,
+      photoURL: user.photoURL || "",
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -81,9 +85,70 @@ const getUserProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     res.json({
+      _id: user._id,
       id: user._id,
       name: user.name,
       email: user.email,
+      photoURL: user.photoURL || "",
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Social login (Google, GitHub)
+// @route   POST /api/auth/social-login
+// @access  Public
+const socialLogin = async (req, res) => {
+  try {
+    const { name, email, provider, providerId, photoURL } = req.body;
+
+    // Validate required fields
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    if (!provider) {
+      return res.status(400).json({ message: "Provider is required" });
+    }
+
+    // Ensure name is never undefined
+    const userName = name || email.split("@")[0] || "User";
+
+    // Check if user exists
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // User exists, update provider info if needed
+      if (user.provider !== provider) {
+        user.provider = provider;
+        user.providerId = providerId;
+      }
+      // Update photoURL if provided and user doesn't have one
+      if (photoURL && !user.photoURL) {
+        user.photoURL = photoURL;
+      }
+      await user.save();
+    } else {
+      // Create new user for social login
+      user = await User.create({
+        name: userName,
+        email,
+        provider,
+        providerId,
+        photoURL: photoURL || "",
+        password: undefined,
+      });
+    }
+
+    res.json({
+      _id: user._id,
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      photoURL: user.photoURL || "",
+      token: generateToken(user._id),
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -94,4 +159,5 @@ module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
+  socialLogin,
 };

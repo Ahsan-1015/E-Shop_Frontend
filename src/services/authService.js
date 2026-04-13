@@ -52,7 +52,26 @@ export const getUserProfile = async (token) => {
   return response.json();
 };
 
+// Social login (Google, GitHub)
+export const socialLogin = async (name, email, provider, providerId, photoURL) => {
+  const response = await fetch(`${API_BASE_URL}/auth/social-login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, email, provider, providerId, photoURL }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Social login failed");
+  }
+
+  return response.json();
+};
+
 export default {
   loginUser,
   getUserProfile,
+  socialLogin,
 };

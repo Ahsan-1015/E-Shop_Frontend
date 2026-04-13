@@ -1,11 +1,43 @@
 const Product = require("../models/Product");
 
-// @desc    Get all products
+// @desc    Get all products with optional filters
 // @route   GET /api/products
 // @access  Public
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const { category, minPrice, maxPrice, search, sort } = req.query;
+    
+    let query = {};
+
+    // Category filter
+    if (category && category !== 'all') {
+      query.category = category;
+    }
+
+    // Price range filter
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+
+    // Search filter
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    // Sort options
+    let sortOption = {};
+    if (sort === 'price_asc') sortOption = { price: 1 };
+    else if (sort === 'price_desc') sortOption = { price: -1 };
+    else if (sort === 'newest') sortOption = { createdAt: -1 };
+    else if (sort === 'name') sortOption = { name: 1 };
+
+    const products = await Product.find(query).sort(sortOption);
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
