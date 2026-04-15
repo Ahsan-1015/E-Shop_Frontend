@@ -4,6 +4,7 @@ const {
   registerUser,
   loginUser,
   getUserProfile,
+  updateUserProfile,
   socialLogin,
 } = require("../controllers/authController");
 const { protect } = require("../middleware/auth");
@@ -12,6 +13,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/social-login", socialLogin);
 router.get("/profile", protect, getUserProfile);
+router.put("/profile", protect, updateUserProfile);
 
 // @route   DELETE /api/auth/logout
 // @desc    Logout user (keep cart and wishlist data)

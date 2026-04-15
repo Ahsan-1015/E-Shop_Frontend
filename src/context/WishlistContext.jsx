@@ -77,6 +77,9 @@ export const WishlistProvider = ({ children }) => {
         if (!isCancelled && response.ok) {
           const data = await response.json();
           setWishlist(data.items || []);
+        } else if (!isCancelled && response.status === 401) {
+          // User was deleted - clear wishlist
+          setWishlist([]);
         }
       } catch (error) {
         console.error("Failed to load user wishlist:", error);

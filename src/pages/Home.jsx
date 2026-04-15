@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import ProductCard from "../components/product/ProductCard";
 import ProductFilters from "../components/product/ProductFilters";
@@ -13,6 +13,8 @@ const Home = () => {
   const [filters, setFilters] = useState({});
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
 
   useEffect(() => {
     let isActive = true;
@@ -40,6 +42,13 @@ const Home = () => {
     
     return () => { isActive = false; };
   }, []);
+
+  useEffect(() => {
+    // If there's a search param, update filters
+    if (searchQuery) {
+      setFilters(prev => ({ ...prev, search: searchQuery }));
+    }
+  }, [searchQuery]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);

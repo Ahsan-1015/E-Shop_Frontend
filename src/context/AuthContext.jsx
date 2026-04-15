@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
+  const logout = async (navigateToLogin = true) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
@@ -110,20 +110,50 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    // Force page reload to reset all state
-    window.location.href = "/login";
+    // Only redirect if explicitly requested (to allow animations to complete)
+    if (navigateToLogin) {
+      window.location.href = "/login";
+    }
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser && storedUser !== "undefined") {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        localStorage.removeItem("user");
+    const validateToken = async () => {
+      const token = localStorage.getItem("token");
+      const storedUser = localStorage.getItem("user");
+      
+      if (!token || !storedUser || storedUser === "undefined") {
+        setLoading(false);
+        return;
       }
-    }
-    setLoading(false);
+
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/profile", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+          localStorage.setItem("user", JSON.stringify(data));
+        } else if (response.status === 401) {
+          // Token invalid - user was deleted or logged out
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setUser(null);
+        }
+      } catch (error) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (e) {
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    validateToken();
   }, []);
 
   const value = {

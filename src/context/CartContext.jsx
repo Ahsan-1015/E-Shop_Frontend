@@ -82,6 +82,9 @@ export const CartProvider = ({ children }) => {
           if (response.ok) {
             const data = await response.json();
             setCart(data.items || []);
+          } else if (response.status === 401) {
+            // User was deleted - clear cart
+            setCart([]);
           } else {
             console.error("Failed to load cart, status:", response.status);
           }

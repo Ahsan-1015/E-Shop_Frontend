@@ -9,9 +9,9 @@ const {
   getAdminProducts,
 } = require("../controllers/adminProductController");
 
-router.get("/products", protect, admin, getAdminProducts);
-router.post("/products", protect, admin, createProduct);
-router.put("/products/:id", protect, admin, updateProduct);
-router.delete("/products/:id", protect, admin, deleteProduct);
+router.get("/", protect, admin, getAdminProducts);
+router.post("/", protect, admin, createProduct);
+router.put("/:id", protect, admin, updateProduct);
+router.delete("/:id", protect, admin, deleteProduct);
 
 module.exports = router;

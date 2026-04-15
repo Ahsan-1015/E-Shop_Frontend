@@ -1,5 +1,13 @@
 import Swal from "sweetalert2";
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: true,
+});
+
 export const swal = {
   success: (title, text) => {
     return Swal.fire({ title, text, icon: "success", timer: 2000, showConfirmButton: false });
@@ -36,6 +44,9 @@ export const swal = {
       reverseButtons: true,
     });
     return result.isConfirmed;
+  },
+  toast: (title, icon = "success") => {
+    return Toast.fire({ title, icon });
   },
 };
 

@@ -9,9 +9,9 @@ const {
   getOrderById,
 } = require("../controllers/adminOrderController");
 
-router.get("/orders", protect, admin, getAllOrders);
-router.get("/orders/:id", protect, admin, getOrderById);
-router.put("/orders/:id/status", protect, admin, updateOrderStatus);
-router.delete("/orders/:id", protect, admin, deleteOrder);
+router.get("/", protect, admin, getAllOrders);
+router.get("/:id", protect, admin, getOrderById);
+router.put("/:id/status", protect, admin, updateOrderStatus);
+router.delete("/:id", protect, admin, deleteOrder);
 
 module.exports = router;

@@ -24,6 +24,10 @@ app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/api/cart", require("./routes/cartRoutes"));
 app.use("/api/wishlist", require("./routes/wishlistRoutes"));
+app.use("/api/admin/products", require("./routes/adminProductRoutes"));
+app.use("/api/admin/users", require("./routes/adminUserRoutes"));
+app.use("/api/admin/orders", require("./routes/adminOrderRoutes"));
+app.use("/api/admin/analytics", require("./routes/adminAnalyticsRoutes"));
 
 // Health check route
 app.get("/", (req, res) => {

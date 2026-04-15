@@ -34,12 +34,18 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
+            <Link to="/" className="flex items-center space-x-2 mb-6 group">
+              <div className="relative w-10 h-10">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 rounded-xl blur-md opacity-60"></div>
+                <div className="relative w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-lg shadow-purple-500/40">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
               </div>
-              <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                E-Shop
+              <span className="text-2xl font-extrabold">
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">E</span>
+                <span className="text-white drop-shadow-md">Shop</span>
               </span>
             </Link>
             <p className="text-gray-400 mb-6 leading-relaxed">
@@ -186,22 +192,35 @@ const Footer = () => {
             <p className="text-gray-500 text-sm">
               &copy; {new Date().getFullYear()} E-Shop. All rights reserved.
             </p>
-            <div className="flex items-center space-x-6">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png"
-                alt="Visa"
-                className="h-6 opacity-60 hover:opacity-100 transition-opacity"
-              />
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png"
-                alt="Mastercard"
-                className="h-8 opacity-60 hover:opacity-100 transition-opacity"
-              />
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/200px-PayPal.svg.png"
-                alt="PayPal"
-                className="h-5 opacity-60 hover:opacity-100 transition-opacity"
-              />
+            <div className="flex items-center space-x-4">
+              {/* Visa */}
+              <div className="h-6 flex items-center">
+                <svg viewBox="0 0 48 32" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity" fill="none">
+                  <rect width="48" height="32" rx="4" fill="#1A1F71"/>
+                  <path d="M19.5 20.5L17 12H14L16.5 20.5H19.5Z" fill="white"/>
+                  <path d="M28.5 12.5C28 12.2 27.2 11.9 26.2 11.9C23.7 11.9 21.8 13.3 21.8 15.3C21.8 16.9 23.2 17.8 24.3 18.3C25.4 18.8 25.8 19.1 25.8 19.6C25.8 20.3 24.9 20.7 24 20.7C22.8 20.7 22.3 20.6 21.4 20.1L21 19.9L20.6 22.1C21.3 22.5 22.6 22.8 24 22.8C26.7 22.8 28.5 21.4 28.5 19.2C28.5 17.8 27.3 16.8 25.8 16.2C24.8 15.8 24.2 15.4 24.2 14.9C24.2 14.5 24.7 14 25.7 14C26.7 14 27.3 14.2 27.9 14.5L28.2 14.6L28.5 12.5Z" fill="white"/>
+                </svg>
+              </div>
+              {/* Mastercard */}
+              <div className="h-8 flex items-center">
+                <svg viewBox="0 0 48 32" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity" fill="none">
+                  <circle cx="19" cy="16" r="10" fill="#EB001B"/>
+                  <circle cx="29" cy="16" r="10" fill="#F79E1B"/>
+                  <path d="M24 10.3C25.7 11.5 26.9 13.3 26.9 15.5C26.9 17.7 25.7 19.5 24 20.7C22.3 19.5 21.1 17.7 21.1 15.5C21.1 13.3 22.3 11.5 24 10.3Z" fill="#FF5F00"/>
+                </svg>
+              </div>
+              {/* PayPal */}
+              <div className="h-5 flex items-center">
+                <svg viewBox="0 0 60 24" className="h-full w-auto opacity-60 hover:opacity-100 transition-opacity" fill="none">
+                  <path d="M23.2 3.4H24.6L23.6 20.6H22.2L23.2 3.4Z" fill="#253B8D"/>
+                  <path d="M30.6 18.7C30.2 19.1 29.6 19.2 28.9 19.2C27.6 19.2 26.7 18.6 26.3 17.8L23.8 9.3H26.3V7.7H22.9L21.6 15.5C21.4 16.8 22 17.7 23 17.7C23.7 17.7 24.3 17.4 24.8 16.9L25.6 15.3H21.5V20.6H26.6C27.4 20.6 28.1 20.3 28.6 19.8L30.6 18.7Z" fill="#253B8D"/>
+                  <path d="M36.4 18.2C35.9 18.9 35 19.3 34 19.3C32.6 19.3 31.7 18.5 31.7 17.3C31.7 16 32.6 15.3 34.2 15.3H35.4V14.3C35.4 12.8 34.5 12 33.3 12C32.2 12 31.6 12.5 31.2 13L30.4 12.1C31 11 32.2 10.2 33.7 10.2C35.7 10.2 37.2 11.5 37.2 14V17.9L37.3 18.2H36.4ZM34.9 17.1C35.5 17.1 36 16.9 36.4 16.5V14.8C36 15.2 35.5 15.4 34.9 15.4C34.2 15.4 33.7 15 33.7 14.3C33.7 13.6 34.2 13.3 34.9 13.3C35.5 13.3 36 13.5 36.4 13.9V12.2C36 11.8 35.5 11.6 34.9 11.6C33.6 11.6 33 12.3 33 13.3C33 14.4 33.6 15 34.9 15H35.4V17.1H34.9Z" fill="#253B8D"/>
+                  <path d="M45.3 14C44.9 13.4 44.1 13 43.1 13C41.2 13 39.4 14.6 39.4 17.3C39.4 20 41.2 21.6 43.1 21.6C44.1 21.6 44.9 21.2 45.3 20.6H47.1C46.5 21.9 45 22.8 43 22.8C39.7 22.8 37.3 20.3 37.3 16.8C37.3 13.4 39.7 10.8 43 10.8C45 10.8 46.5 11.7 47.1 13H45.3V14ZM43.9 19.4C44.9 19.4 45.7 18.7 45.7 17.2C45.7 15.7 44.9 15 43.9 15C43 15 42.2 15.7 42.2 17.2C42.2 18.7 43 19.4 43.9 19.4Z" fill="#253B8D"/>
+                  <path d="M56.4 18.2C55.9 18.9 55 19.3 54 19.3C52.6 19.3 51.7 18.5 51.7 17.3C51.7 16 52.6 15.3 54.2 15.3H55.4V14.3C55.4 12.8 54.5 12 53.3 12C52.2 12 51.6 12.5 51.2 13L50.4 12.1C51 11 52.2 10.2 53.7 10.2C55.7 10.2 57.2 11.5 57.2 14V17.9L57.3 18.2H56.4ZM54.9 17.1C55.5 17.1 56 16.9 56.4 16.5V14.8C56 15.2 55.5 15.4 54.9 15.4C54.2 15.4 53.7 15 53.7 14.3C53.7 13.6 54.2 13.3 54.9 13.3C55.5 13.3 56 13.5 56.4 13.9V12.2C56 11.8 55.5 11.6 54.9 11.6C53.6 11.6 53 12.3 53 13.3C53 14.4 53.6 15 54.9 15H55.4V17.1H54.9Z" fill="#253B8D"/>
+                  <path d="M13.4 10.2L12.2 16.9C12 17.8 12.5 18.3 13.1 18.3H15.2L14.7 21.1L12.2 21.3L9.9 10.4H11.9L12.6 13.3H12.8L13.4 10.2Z" fill="#253B8D"/>
+                  <path d="M19.5 10.2H17.2L17.6 12.9H17.4L16.3 10.2H14L15.2 14L14.9 15.6H15.1L16.1 18.2H18.4L20.2 14L19.5 10.2Z" fill="#253B8D"/>
+                </svg>
+              </div>
             </div>
           </div>
         </div>

@@ -41,6 +41,15 @@ const userSchema = new mongoose.Schema({
     type: Array,
     default: function() { return []; }
   },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user"
+  },
+  isBlocked: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now,

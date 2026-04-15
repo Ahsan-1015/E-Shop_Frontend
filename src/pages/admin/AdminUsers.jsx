@@ -25,9 +25,21 @@ export default function AdminUsers() {
     if (!confirmed) return;
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/admin/users/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
-      swal.success("Deleted!", "User has been deleted.");
-      fetchUsers();
+      const response = await fetch(`http://localhost:5000/api/admin/users/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      
+      if (response.ok) {
+        // Check if admin deleted themselves
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        if (storedUser._id === id || storedUser.id === id) {
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+          return;
+        }
+        
+        swal.success("Deleted!", "User has been deleted.");
+        fetchUsers();
+      }
     } catch (error) {
       console.error("Error deleting user:", error);
     }

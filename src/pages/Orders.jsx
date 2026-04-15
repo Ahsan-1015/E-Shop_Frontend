@@ -160,7 +160,7 @@ const Orders = () => {
                             to={`/product/${item.product}`}
                             className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                           >
-                            <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
+                            <img src={item.image || "https://via.placeholder.com/100"} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
                             <div className="min-w-0">
                               <p className="text-sm font-medium text-gray-800 dark:text-white truncate">{item.name}</p>
                               <p className="text-xs text-gray-500 dark:text-gray-400">Qty: {item.quantity}</p>

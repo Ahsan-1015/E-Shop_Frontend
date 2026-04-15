@@ -92,7 +92,7 @@ export default function UserOrders() {
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-2">
                     {order.items?.slice(0, 3).map((item, index) => (
-                      <img key={index} src={item.image} alt={item.name} className="w-10 h-10 rounded-xl object-cover border-2 border-white dark:border-gray-800" />
+                      <img key={index} src={item.image || "https://via.placeholder.com/100"} alt={item.name} className="w-10 h-10 rounded-xl object-cover border-2 border-white dark:border-gray-800" />
                     ))}
                     {order.items?.length > 3 && (
                       <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs font-medium text-gray-500 border-2 border-white dark:border-gray-800">
@@ -148,7 +148,7 @@ export default function UserOrders() {
                 <div className="space-y-3">
                   {selectedOrder.items?.map((item, index) => (
                     <div key={index} className="flex items-center gap-4 bg-gray-50 dark:bg-gray-700 p-3 rounded-xl">
-                      <img src={item.image} alt={item.name} className="w-16 h-16 rounded-xl object-cover" />
+                      <img src={item.image || "https://via.placeholder.com/100"} alt={item.name} className="w-16 h-16 rounded-xl object-cover" />
                       <div className="flex-1">
                         <p className="font-medium text-gray-800 dark:text-white">{item.name}</p>
                         <p className="text-gray-500 text-sm">Qty: {item.quantity} × ${item.price}</p>

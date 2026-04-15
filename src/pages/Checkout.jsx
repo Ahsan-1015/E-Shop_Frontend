@@ -40,6 +40,7 @@ const Checkout = () => {
             name: item.name,
             price: item.price,
             quantity: item.quantity,
+            image: item.image,
           })),
           total: getCartTotal() * 1.1,
           shippingAddress: {

@@ -5,9 +5,10 @@ export default {
   theme: {
     extend: {
       animation: {
-        fadeIn: "fadeIn 0.5s ease-out forwards",
+        fadeIn: "fadeIn 0.3s ease-out forwards",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "slide-in": "slideIn 0.5s ease-out forwards",
+        "slide-in": "slideIn 0.3s ease-out forwards",
+        "slideInRight": "slideInRight 0.3s ease-out forwards",
       },
       keyframes: {
         fadeIn: {
@@ -16,6 +17,10 @@ export default {
         },
         slideIn: {
           "0%": { opacity: "0", transform: "translateX(-20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        slideInRight: {
+          "0%": { opacity: "0", transform: "translateX(100%)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
       },

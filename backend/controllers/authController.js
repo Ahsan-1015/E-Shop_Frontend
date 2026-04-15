@@ -35,6 +35,7 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         photoURL: user.photoURL || "",
+        role: user.role || "user",
         token: generateToken(user._id),
       });
     }
@@ -62,12 +63,13 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    res.json({
+res.json({
       _id: user._id,
       id: user._id,
       name: user.name,
       email: user.email,
       photoURL: user.photoURL || "",
+      role: user.role || "user",
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -90,7 +92,51 @@ const getUserProfile = async (req, res) => {
       name: user.name,
       email: user.email,
       photoURL: user.photoURL || "",
+      role: user.role || "user",
       token: generateToken(user._id),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateUserProfile = async (req, res) => {
+  try {
+    const { name, email, photoURL } = req.body;
+
+    const existingUser = await User.findById(req.user.id);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (email && email !== existingUser.email) {
+      const emailExists = await User.findOne({ email: email.toLowerCase() });
+      if (emailExists && emailExists._id.toString() !== req.user.id) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+    }
+
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email.toLowerCase();
+    if (photoURL !== undefined) updateData.photoURL = photoURL;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    res.json({
+      _id: updatedUser._id,
+      id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      photoURL: updatedUser.photoURL || "",
+      role: updatedUser.role || "user",
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -148,6 +194,7 @@ const socialLogin = async (req, res) => {
       name: user.name,
       email: user.email,
       photoURL: user.photoURL || "",
+      role: user.role || "user",
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -159,5 +206,6 @@ module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
+  updateUserProfile,
   socialLogin,
 };

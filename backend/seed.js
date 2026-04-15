@@ -117,11 +117,18 @@ const seedData = async () => {
     // Insert products
     await Product.insertMany(products);
 
-    // Create a test user
+    // Create a test user and admin user
     await User.create({
       name: "Test User",
       email: "test@example.com",
       password: "password123",
+    });
+
+    await User.create({
+      name: "Admin User",
+      email: "aaaa.ahshanhabib@gmail.com",
+      password: "admin123",
+      role: "admin",
     });
 
     console.log("Data seeded successfully!");
