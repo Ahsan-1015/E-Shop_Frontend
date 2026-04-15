@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ export default function AdminProducts() {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/admin/products", { headers: { Authorization: `Bearer ${token}` } });
+      const response = await fetch("${API_URL}/admin/products", { headers: { Authorization: `Bearer ${token}` } });
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -26,7 +28,7 @@ export default function AdminProducts() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const url = editingProduct ? `http://localhost:5000/api/admin/products/${editingProduct._id}` : "http://localhost:5000/api/admin/products";
+      const url = editingProduct ? `${API_URL}/admin/products/${editingProduct._id}` : "${API_URL}/admin/products";
       const method = editingProduct ? "PUT" : "POST";
       await fetch(url, { method, headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify(formData) });
       fetchProducts();
@@ -42,7 +44,7 @@ export default function AdminProducts() {
     if (!confirm("Delete this product?")) return;
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/admin/products/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      await fetch(`${API_URL}/admin/products/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

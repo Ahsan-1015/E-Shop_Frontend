@@ -5,7 +5,7 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
 
-const AuthContext = createContext();
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("${API_URL}/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
 
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch("${API_URL}/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 
   const socialLogin = async (name, email, provider, providerId, photoURL) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/social-login", {
+      const response = await fetch("${API_URL}/auth/social-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, provider, providerId, photoURL }),
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await fetch("http://localhost:5000/api/auth/logout", {
+        await fetch("${API_URL}/auth/logout", {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch("http://localhost:5000/api/auth/profile", {
+        const response = await fetch("${API_URL}/auth/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

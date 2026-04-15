@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 const statusColors = {
   pending: "bg-yellow-500/20 text-yellow-400",
   processing: "bg-blue-500/20 text-blue-400",
@@ -19,7 +21,7 @@ export default function AdminOrders() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/admin/orders", { headers: { Authorization: `Bearer ${token}` } });
+      const response = await fetch("${API_URL}/admin/orders", { headers: { Authorization: `Bearer ${token}` } });
       const data = await response.json();
       setOrders(data);
     } catch (error) {
@@ -32,7 +34,7 @@ export default function AdminOrders() {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/admin/orders/${orderId}/status`, { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify({ status: newStatus }) });
+      await fetch(`${API_URL}/admin/orders/${orderId}/status`, { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify({ status: newStatus }) });
       fetchOrders();
     } catch (error) {
       console.error("Error updating order status:", error);
@@ -43,7 +45,7 @@ export default function AdminOrders() {
     if (!confirm("Delete this order?")) return;
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/admin/orders/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      await fetch(`${API_URL}/admin/orders/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
       fetchOrders();
     } catch (error) {
       console.error("Error deleting order:", error);

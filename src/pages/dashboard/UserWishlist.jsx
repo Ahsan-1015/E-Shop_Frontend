@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 export default function UserWishlist() {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ export default function UserWishlist() {
   const fetchWishlist = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/wishlist", {
+      const response = await fetch("${API_URL}/wishlist", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -29,7 +31,7 @@ export default function UserWishlist() {
   const removeFromWishlist = async (productId) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/wishlist/${productId}`, {
+      await fetch(`${API_URL}/wishlist/${productId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Loader from "../components/common/Loader";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 const Orders = () => {
   const { user } = useAuth();
   const [orders, setOrders] = useState([]);
@@ -18,7 +20,7 @@ const Orders = () => {
 
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/orders/my-orders", {
+        const response = await fetch("${API_URL}/orders/my-orders", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

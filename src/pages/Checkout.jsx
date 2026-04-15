@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCartContext } from "../context/CartContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 const Checkout = () => {
   const { user } = useAuth();
   const { cart, getCartTotal, clearCart } = useCartContext();
@@ -28,7 +30,7 @@ const Checkout = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/orders", {
+      const response = await fetch("${API_URL}/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

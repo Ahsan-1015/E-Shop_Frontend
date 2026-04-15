@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { useAuth } from "./AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 const CartContext = createContext();
 
 export const useCartContext = () => {
@@ -25,7 +27,7 @@ export const CartProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
       
-      const response = await fetch("http://localhost:5000/api/cart", {
+      const response = await fetch("${API_URL}/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +74,7 @@ export const CartProvider = ({ children }) => {
           return;
         }
         
-        const response = await fetch("http://localhost:5000/api/cart", {
+        const response = await fetch("${API_URL}/cart", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -180,7 +182,7 @@ export const CartProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        const response = await fetch("http://localhost:5000/api/cart", {
+        const response = await fetch("${API_URL}/cart", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
@@ -201,7 +203,7 @@ export const CartProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
       
-      const response = await fetch("http://localhost:5000/api/cart", {
+      const response = await fetch("${API_URL}/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.ok) {

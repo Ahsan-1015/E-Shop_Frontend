@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { swal } from "../../utils/swal";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ export default function AdminUsers() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/admin/users", { headers: { Authorization: `Bearer ${token}` } });
+      const response = await fetch("${API_URL}/admin/users", { headers: { Authorization: `Bearer ${token}` } });
       const data = await response.json();
       setUsers(data);
     } catch (error) {
@@ -25,7 +27,7 @@ export default function AdminUsers() {
     if (!confirmed) return;
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/admin/users/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      const response = await fetch(`${API_URL}/admin/users/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
       
       if (response.ok) {
         // Check if admin deleted themselves
@@ -48,7 +50,7 @@ export default function AdminUsers() {
   const handleBlock = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/admin/users/${id}/block`, { method: "PUT", headers: { Authorization: `Bearer ${token}` } });
+      await fetch(`${API_URL}/admin/users/${id}/block`, { method: "PUT", headers: { Authorization: `Bearer ${token}` } });
       fetchUsers();
     } catch (error) {
       console.error("Error blocking user:", error);

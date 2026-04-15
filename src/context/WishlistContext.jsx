@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { useAuth } from "./AuthContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+
 const WishlistContext = createContext();
 
 export const useWishlist = () => {
@@ -25,7 +27,7 @@ export const WishlistProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
       
-      await fetch("http://localhost:5000/api/wishlist", {
+      await fetch("${API_URL}/wishlist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +70,7 @@ export const WishlistProvider = ({ children }) => {
           return;
         }
         
-        const response = await fetch("http://localhost:5000/api/wishlist", {
+        const response = await fetch("${API_URL}/wishlist", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -157,7 +159,7 @@ export const WishlistProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) return;
       
-      const response = await fetch("http://localhost:5000/api/wishlist", {
+      const response = await fetch("${API_URL}/wishlist", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.ok) {
