@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function ChangePassword() {
   const [formData, setFormData] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
@@ -28,7 +28,7 @@ export default function ChangePassword() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${API_URL}/auth/change-password", {
+      const response = await fetch(`${API_URL}/auth/change-password`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ currentPassword: formData.currentPassword, newPassword: formData.newPassword }),

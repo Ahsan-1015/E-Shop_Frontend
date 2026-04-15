@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function UserProfile() {
   const { user } = useAuth();
@@ -22,7 +22,7 @@ export default function UserProfile() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${API_URL}/auth/profile", {
+      const response = await fetch(`${API_URL}/auth/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

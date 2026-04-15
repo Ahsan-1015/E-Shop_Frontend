@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
-const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const COLORS = ["#8b5cf6", "#10b981", "#f59e0b", "#ef4444", "#3b82f6"];
 
@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   const fetchAnalytics = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${API_URL}/admin/analytics", {
+      const response = await fetch(`${API_URL}/admin/analytics`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.ok) {

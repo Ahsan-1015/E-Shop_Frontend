@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function UserWishlist() {
   const [wishlist, setWishlist] = useState([]);
@@ -14,7 +14,7 @@ export default function UserWishlist() {
   const fetchWishlist = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${API_URL}/wishlist", {
+      const response = await fetch(`${API_URL}/wishlist`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();

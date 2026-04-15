@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const statusColors = {
   pending: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
@@ -21,7 +21,7 @@ export default function UserOrders() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${API_URL}/orders", {
+      const response = await fetch(`${API_URL}/orders`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();

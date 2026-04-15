@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL || "${API_URL}";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const statusColors = {
   pending: "bg-yellow-500/20 text-yellow-400",
@@ -21,7 +21,7 @@ export default function AdminOrders() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${API_URL}/admin/orders", { headers: { Authorization: `Bearer ${token}` } });
+      const response = await fetch(`${API_URL}/admin/orders`, { headers: { Authorization: `Bearer ${token}` } });
       const data = await response.json();
       setOrders(data);
     } catch (error) {
