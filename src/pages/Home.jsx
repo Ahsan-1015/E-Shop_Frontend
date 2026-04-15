@@ -15,6 +15,8 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     let isActive = true;
@@ -53,10 +55,20 @@ const Home = () => {
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
     setSelectedCategory(null);
+    setVisibleCount(12);
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category === selectedCategory ? null : category);
+    setVisibleCount(12);
+  };
+
+  const handleLoadMore = () => {
+    setLoadingMore(true);
+    setTimeout(() => {
+      setVisibleCount(prev => prev + 12);
+      setLoadingMore(false);
+    }, 500);
   };
 
   const filteredProducts = products.filter(product => {
@@ -92,12 +104,34 @@ const Home = () => {
     Sports: '⚽',
     Beauty: '💄',
     Toys: '🎮',
-    Furniture: '🛋️'
+    Accessories: '👜',
+    Food: '🍯',
+    Garden: '🌱'
   };
 
-  const displayProducts = selectedCategory || filters.search || filters.minPrice || filters.maxPrice 
+  const ProductSkeleton = () => (
+    <div className="bg-white rounded-xl overflow-hidden shadow-md">
+      <div className="h-32 sm:h-48 bg-gray-200 animate-pulse"></div>
+      <div className="p-3 sm:p-4">
+        <div className="h-3 sm:h-4 bg-gray-200 rounded animate-pulse mb-2 w-3/4"></div>
+        <div className="h-2 sm:h-3 bg-gray-200 rounded animate-pulse mb-2 w-1/2"></div>
+        <div className="flex justify-between">
+          <div className="h-4 sm:h-6 bg-gray-200 rounded animate-pulse w-1/3"></div>
+          <div className="h-4 sm:h-6 bg-gray-200 rounded animate-pulse w-1/4"></div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const displayProducts = (selectedCategory || filters.search || filters.minPrice || filters.maxPrice 
+    ? filteredProducts 
+    : products).slice(0, visibleCount);
+
+  const totalProducts = selectedCategory || filters.search || filters.minPrice || filters.maxPrice 
     ? filteredProducts 
     : products;
+
+  const hasMore = visibleCount < totalProducts.length;
 
   return (
     <div className="min-h-screen">
@@ -136,8 +170,8 @@ const Home = () => {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Shop by Category</h2>
               <p className="text-gray-500">Browse our products by category</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {categories.slice(0, 6).map((category) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => handleCategoryClick(category)}
@@ -164,7 +198,7 @@ const Home = () => {
               {selectedCategory ? `${selectedCategory} Products` : 'Featured Products'}
             </h2>
             <p className="text-gray-500">
-              {displayProducts.length} {displayProducts.length === 1 ? 'product' : 'products'} available
+              {totalProducts.length} {totalProducts.length === 1 ? 'product' : 'products'} available • Showing {displayProducts.length}
             </p>
           </div>
           {selectedCategory && (
@@ -199,17 +233,34 @@ const Home = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {displayProducts.map((product, index) => (
-              <div
-                key={product._id}
-                className="animate-fadeIn"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <ProductCard product={product} />
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+              {displayProducts.map((product) => (
+                <div key={product._id}>
+                  <ProductCard product={product} />
+                </div>
+              ))}
+              {loadingMore && (
+                <>
+                  {[...Array(8)].map((_, i) => (
+                    <ProductSkeleton key={`skeleton-${i}`} />
+                  ))}
+                </>
+              )}
+            </div>
+            
+            {hasMore && (
+              <div className="text-center mt-12">
+                <button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all disabled:opacity-50"
+                >
+                  {loadingMore ? 'Loading...' : `Load More (${totalProducts.length - visibleCount} more)`}
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </section>
 

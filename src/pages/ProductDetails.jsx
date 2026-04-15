@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../components/common/Loader";
 import { useCartContext } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import { getProductById } from "../services/productService";
 
 const ProductDetails = () => {
@@ -13,12 +14,17 @@ const ProductDetails = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const { addToCart } = useCartContext();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const data = await getProductById(id);
         setProduct(data);
+        if (data?._id) {
+          setIsWishlisted(isInWishlist(data._id));
+        }
       } catch (err) {
         setError("Failed to load product");
         console.error(err);
@@ -34,6 +40,15 @@ const ProductDetails = () => {
     setIsAdding(true);
     addToCart({ ...product, quantity });
     setTimeout(() => setIsAdding(false), 600);
+  };
+
+  const handleWishlistToggle = () => {
+    if (isWishlisted) {
+      removeFromWishlist(product._id);
+    } else {
+      addToWishlist(product);
+    }
+    setIsWishlisted(!isWishlisted);
   };
 
   if (loading) return <Loader />;
@@ -255,8 +270,15 @@ const ProductDetails = () => {
                   </span>
                 )}
               </button>
-              <button className="w-14 h-14 bg-white border-2 border-gray-200 rounded-2xl hover:border-red-500 hover:text-red-500 hover:shadow-lg transition-all flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button 
+                onClick={handleWishlistToggle}
+                className={`w-14 h-14 border-2 rounded-2xl hover:shadow-lg transition-all flex items-center justify-center ${
+                  isWishlisted 
+                    ? "bg-red-50 border-red-500 text-red-500" 
+                    : "bg-white border-gray-200 text-gray-400 hover:border-red-500 hover:text-red-500"
+                }`}
+              >
+                <svg className="w-6 h-6" fill={isWishlisted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </button>
