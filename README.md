@@ -2,6 +2,10 @@
 
 A full-stack e-commerce application built with React, Node.js, Express, and MongoDB.
 
+## 🌐 Live Link
+Check out the live site here:
+**[https://e-shop-ten-mu.vercel.app/](https://e-shop-ten-mu.vercel.app/)**
+
 ## Tech Stacks
 
 ### Frontend
